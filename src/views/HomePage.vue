@@ -1,63 +1,70 @@
 <template>
   <el-container style="height: 100vh">
-    <el-header class="header">
-      <el-row style="align-items: center; height: 100%">
-        <el-col :span="1"
-          ><el-button color="#2d529e" circle size="large" @click="hide"
-            ><el-icon><Menu /></el-icon></el-button
-        ></el-col>
-        <el-col :span="3"
-          ><span class="font">{{ title }}</span></el-col
-        >
-        <el-col :span="4"
-          ><el-input
-            type="text"
-            v-model="search"
-            prefix-icon="Search"
-            clearable
-            size="large"
-          ></el-input
-        ></el-col>
-      </el-row>
+    <el-header>
+      <div class="header">
+        <el-row style="align-items: center; height: 100%">
+          <el-col :span="1"
+            ><el-button color="#2d529e" circle size="large" @click="hide"
+              ><el-icon size="20"><Menu /></el-icon></el-button
+          ></el-col>
+          <el-col :span="3"
+            ><span class="font">{{ title }}</span></el-col
+          >
+          <el-col :span="4"
+            ><el-input
+              type="text"
+              v-model="search"
+              prefix-icon="Search"
+              clearable
+              size="large"
+            ></el-input
+          ></el-col>
+        </el-row>
+      </div>
     </el-header>
     <el-container>
-      <el-menu :collapse="aside" class="el-menu-vertical">
-        <el-sub-menu
-          v-for="item in hasChildren"
-          :key="item.name"
-          :index="item.name"
-        >
-          <template #title>
-            <el-icon><component :is="item.icon" /></el-icon>
-            <span>{{ item.label }}</span>
-          </template>
-          <el-menu-item-group
-            v-for="subItem in item.children"
-            :key="subItem.name"
-            :index="subItem.name"
+      <el-aside>
+        <el-menu :collapse="aside" class="el-menu-vertical">
+          <el-sub-menu
+            v-for="item in hasChildren"
+            :key="item.name"
+            :index="item.name"
           >
-            <!-- <el-icon><component :is="subItem.icon" /></el-icon> -->
-            <el-menu-item :index="subItem.name">{{
-              subItem.label
-            }}</el-menu-item>
-          </el-menu-item-group>
-        </el-sub-menu>
-        <el-menu-item
-          v-for="item in noChildren"
-          :key="item.name"
-          :index="item.name"
-        >
-          <el-icon><component :is="item.icon" /></el-icon>
-          <span>{{ item.label }}</span>
-        </el-menu-item>
-      </el-menu>
-      <el-main> <h1>home page</h1></el-main>
+            <template #title>
+              <el-icon size="20"><component :is="item.icon" /></el-icon>
+              <span>{{ item.label }}</span>
+            </template>
+            <el-menu-item-group
+              v-for="subItem in item.children"
+              :key="subItem.name"
+              :index="subItem.name"
+              @click="clickMenu(subItem)"
+            >
+              <!-- <el-icon><component :is="subItem.icon" /></el-icon> -->
+              <el-menu-item :index="subItem.name">{{
+                subItem.label
+              }}</el-menu-item>
+            </el-menu-item-group>
+          </el-sub-menu>
+          <el-menu-item
+            v-for="item in noChildren"
+            :key="item.name"
+            :index="item.name"
+            @click="clickMenu(item)"
+          >
+            <el-icon size="20"><component :is="item.icon" /></el-icon>
+            <span>{{ item.label }}</span>
+          </el-menu-item>
+        </el-menu></el-aside
+      >
+      <el-main>
+        <router-view />
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <script>
-//import asideComp from "@/components/AsideComp.vue";
 export default {
   data() {
     return {
@@ -72,30 +79,35 @@ export default {
           icon: "Plus",
           children: [
             {
+              path: "/home",
               name: "all",
               label: "全部",
               icon: null,
               filter: "all",
             },
             {
+              path: "/home",
               name: "picture",
               label: "图片",
               icon: "Picture",
               filter: "picture",
             },
             {
+              path: "/home",
               name: "vedio",
               label: "视频",
               icon: null,
               filter: "vedio",
             },
             {
+              path: "/home",
               name: "sound",
               label: "音乐",
               icon: null,
               filter: "sound",
             },
             {
+              path: "/home",
               name: "document",
               label: "文档",
               icon: null,
@@ -123,6 +135,11 @@ export default {
     hide() {
       this.aside = !this.aside;
     },
+    clickMenu(item) {
+      if (this.$route.path != item.path) {
+        this.$router.push(item.path);
+      }
+    },
   },
   computed: {
     hasChildren() {
@@ -135,30 +152,30 @@ export default {
 };
 </script>
 
-<style>
-/* .a {
-  background-color: gray;
-} */
-.el-icon {
-  transform: scale(1.5);
-}
+<style lang="less" scoped>
 .font {
   color: white;
   font-weight: bold;
   font-size: 120%;
 }
+.el-header {
+  padding: 0;
+}
+.el-aside{
+  width: 200px;
+}
 .header {
   background-color: #2d529e;
+  height: 100%;
   /* box-shadow: 0 0px 5px; */
 }
-.aside {
-  border-right: gray;
-  border-style: none solid none none;
-  border-width: 1px;
-}
-
 .el-menu-vertical:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+  height: 100%;
+}
+.el-main {
+  padding: 0%;
+  // width: 0px; // idk
 }
 </style>

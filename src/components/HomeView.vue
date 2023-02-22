@@ -1,9 +1,28 @@
 <template>
   <el-card :body-style="{ padding: '0px' }" class="guide">
-    <div class="card-div">
-      <div v-for="i in guideData" :key="i.name" class="card-div2">
-        <el-button text @click="goto(i)">{{ i.path }}</el-button>
-        <el-icon><ArrowRight /></el-icon>
+    <div>
+      <div class="card-div">
+        <div class="card-div2">
+          <div v-for="i in guideData" :key="i.name" class="card-div3">
+            <el-button text @click="goto(i)">{{ i.path }}</el-button>
+            <el-icon><ArrowRight /></el-icon>
+          </div>
+        </div>
+        <div class="upload">
+          <el-dropdown>
+            <el-button type="primary">
+              <el-icon
+                ><el-icon><Plus /></el-icon
+              ></el-icon>
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="upload()">上传文件</el-dropdown-item>
+                <el-dropdown-item @click="mkdir()">新建文件夹</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </div>
   </el-card>
@@ -16,7 +35,8 @@
             <el-card
               :body-style="{ padding: '0px' }"
               class="folder"
-              shadow="never"
+              shadow="hover"
+              @click="checkFolder()"
             >
               <div class="folder-div">
                 <el-icon size="20"><Folder /></el-icon>
@@ -34,7 +54,8 @@
             <el-card
               :body-style="{ padding: '0px' }"
               class="file"
-              shadow="never"
+              shadow="hover"
+              @click="checkItem()"
             >
               <div class="describe"></div>
               <el-divider />
@@ -55,9 +76,20 @@ export default {
   name: "HomeView",
   methods: {
     goto() {
-      // alert("aa");
-      // alert(JSON.stringify(this.fileInfo));
+      alert("aa");
     },
+    upload() {
+      alert("aa");
+    },
+    mkdir() {
+      alert("aa");
+    },
+    checkItem(){
+      alert("aa");
+    },
+    checkFolder(){
+      alert("aa");
+    }
   },
   data() {
     return {
@@ -73,6 +105,10 @@ export default {
         {
           name: "path3",
           path: "data",
+        },
+        {
+          name: "path4",
+          path: "data2",
         },
       ],
       fileInfo: [
@@ -251,12 +287,19 @@ export default {
   .card-div {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 40px;
     padding-left: 10px;
-  }
-  .card-div2 {
-    display: flex;
-    align-items: center;
+    .card-div2 {
+      display: flex;
+      .card-div3 {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .upload {
+      margin: 20px;
+    }
   }
 }
 .folder {

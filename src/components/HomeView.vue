@@ -30,6 +30,7 @@
     <el-scrollbar always="true">
       <div class="back">
         <div style="margin: 10px"><span>文件夹</span></div>
+        <span v-show="isFolder.length === 0">aaa</span>
         <div class="flex">
           <div v-for="i in isFolder" :key="i.name">
             <el-card
@@ -49,6 +50,7 @@
       <el-divider />
       <div class="back">
         <div style="margin: 10px"><span>文件</span></div>
+        <span v-show="isFile.length === 0">aaa</span>
         <div class="flex">
           <div v-for="i in isFile" :key="i.name">
             <el-card
@@ -89,6 +91,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "HomeView",
   methods: {
@@ -110,176 +113,8 @@ export default {
   },
   data() {
     return {
-      guideData: [
-        {
-          name: "path1",
-          path: "/",
-        },
-        {
-          name: "path2",
-          path: "home",
-        },
-        {
-          name: "path3",
-          path: "data",
-        },
-        {
-          name: "path4",
-          path: "data2",
-        },
-      ],
-      fileInfo: [
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-      ],
+      guideData: [],
+      fileInfo: [],
     };
   },
   computed: {
@@ -289,6 +124,20 @@ export default {
     isFolder() {
       return this.fileInfo.filter((item) => item.type === "folder");
     },
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8080/guidedata.json")
+      .then((response) => (this.guideData = response.data))
+      .catch(function (error) {
+        alert(error);
+      });
+    axios
+      .get("http://127.0.0.1:8080/fileinfo.json")
+      .then((response) => (this.fileInfo = response.data))
+      .catch(function (error) {
+        alert(error);
+      });
   },
 };
 </script>

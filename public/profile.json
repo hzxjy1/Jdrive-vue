@@ -4,15 +4,15 @@
         "value": "1"
     },
     {
-        "name": "name",
+        "name": "名称",
         "value": "aa"
     },
     {
-        "name": "group",
+        "name": "用户组",
         "value": "1"
     },
     {
-        "name": "time",
+        "name": "注册时间",
         "value": "11111"
     }
 ]

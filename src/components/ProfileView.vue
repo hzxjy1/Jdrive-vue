@@ -18,30 +18,23 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   name: "ProfileView",
   data() {
     return {
-      userid: "aa",
-      data: [
-        {
-          name: "userid",
-          value: "1",
-        },
-        {
-          name: "name",
-          value: "aa",
-        },
-        {
-          name: "group",
-          value: "1",
-        },
-        {
-          name: "time",
-          value: "2022-12-23 04:21:34",
-        },
-      ],
+      userid: "",
+      data: [],
     };
+  },
+  mounted() {
+    axios
+      .get("http://127.0.0.1:8080/profile.json")
+      .then((response) => (this.data = response.data))
+      .then((response) => (this.userid = response.data[1].value))
+      .catch(function (error) {
+        alert(error);
+      });
   },
 };
 </script>

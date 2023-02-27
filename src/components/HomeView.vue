@@ -50,9 +50,27 @@
       <el-divider />
       <div class="back">
         <div style="margin: 10px"><span>文件</span></div>
-        <span v-show="isFile.length === 0">aaa</span>
+        <span v-show="judge()">aaa</span>
         <div class="flex">
           <div v-for="i in isFile" :key="i.name">
+            <el-card
+              :body-style="{ padding: '0px' }"
+              class="file"
+              shadow="hover"
+              @click="checkItem()"
+            >
+              <div class="describe"></div>
+              <el-divider />
+              <div class="file-name">
+                <el-icon size="20"><Picture /></el-icon>
+                <span>{{ i.name }}</span>
+              </div>
+            </el-card>
+          </div>
+        </div>
+
+        <div class="flex" v-show="this.$route.params.filter === undefined">
+          <div v-for="i in dataFilter" :key="i.name">
             <el-card
               :body-style="{ padding: '0px' }"
               class="file"
@@ -71,23 +89,6 @@
       </div>
     </el-scrollbar>
   </div>
-  <!-- dialog -->
-  <el-dialog
-    v-model="dialogVisible"
-    title="Tips"
-    width="30%"
-    :before-close="handleClose"
-  >
-    <span>This is a message</span>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogVisible = false">
-          Confirm
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 
 <script>
@@ -95,9 +96,7 @@ import axios from "axios";
 export default {
   name: "HomeView",
   methods: {
-    goto() {
-      alert("aa");
-    },
+    goto() {},
     upload() {
       alert("aa");
     },
@@ -110,19 +109,31 @@ export default {
     checkFolder() {
       alert("aa");
     },
+    judge() {
+      if (
+        (this.isFile.length === 0) ===
+        (this.$route.params.filter === undefined)
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
   },
   data() {
     return {
       guideData: [],
-      fileInfo: [],
+      dataFilter: [],
     };
   },
   computed: {
     isFile() {
-      return this.fileInfo.filter((item) => item.type === "file");
+      return this.dataFilter
+        .filter((item) => item.type === "file")
+        .filter((item) => item.style === this.$route.params.filter);
     },
     isFolder() {
-      return this.fileInfo.filter((item) => item.type === "folder");
+      return this.dataFilter.filter((item) => item.type === "folder");
     },
   },
   mounted() {
@@ -134,7 +145,7 @@ export default {
       });
     axios
       .get("http://127.0.0.1:8080/fileinfo.json")
-      .then((response) => (this.fileInfo = response.data))
+      .then((response) => (this.dataFilter = response.data))
       .catch(function (error) {
         alert(error);
       });
@@ -143,7 +154,6 @@ export default {
 </script>
 <style lang="less" scoped>
 .scrollbar {
-  // background-color:gray;
   height: 85vh;
 }
 .el-divider {
@@ -205,7 +215,6 @@ export default {
   .flex {
     display: flex;
     flex-wrap: wrap;
-    // background-color: gray;
   }
 }
 </style>

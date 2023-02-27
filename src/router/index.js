@@ -16,7 +16,12 @@ const routes = [
       {
         path:"/home",
         name:"home",
-        component:HomeView
+        component:HomeView,
+        children:[{
+          path:":filter",
+          name:"params",
+          component:HomeView,
+        }]
       },
       {
         path:"/profile",

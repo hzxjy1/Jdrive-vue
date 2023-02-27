@@ -33,6 +33,24 @@
     },
     {
         "type": "file",
+        "style": "vedio",
+        "name": "file",
+        "path": "/file"
+    },
+    {
+        "type": "file",
+        "style": "music",
+        "name": "file",
+        "path": "/file"
+    },
+    {
+        "type": "file",
+        "style": "music",
+        "name": "file",
+        "path": "/file"
+    },
+    {
+        "type": "file",
         "style": "music",
         "name": "file",
         "path": "/file"

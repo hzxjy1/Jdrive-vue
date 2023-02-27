@@ -31,6 +31,11 @@ export default {
     axios
       .get("http://127.0.0.1:8080/profile.json")
       .then((response) => (this.data = response.data))
+      .catch(function (error) {
+        alert(error);
+      });
+    axios
+      .get("http://127.0.0.1:8080/profile.json")
       .then((response) => (this.userid = response.data[1].value))
       .catch(function (error) {
         alert(error);

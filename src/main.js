@@ -14,3 +14,4 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   }
 app.mount('#app')
 createApp.prototype.$axios=axios
+axios.defaults.baseURL = 'http://localhost:8080'

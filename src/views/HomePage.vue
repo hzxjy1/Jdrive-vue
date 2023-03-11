@@ -93,11 +93,11 @@ export default {
               filter: "picture",
             },
             {
-              path: "/home/vedio",
-              name: "vedio",
+              path: "/home/video",
+              name: "video",
               label: "视频",
               icon: null,
-              filter: "vedio",
+              filter: "video",
             },
             {
               path: "/home/music",
@@ -112,6 +112,13 @@ export default {
               label: "文档",
               icon: null,
               filter: "document",
+            },
+            {
+              path: "/home/other",
+              name: "other",
+              label: "其他",
+              icon: null,
+              filter: "other",
             },
           ],
         },
@@ -161,7 +168,7 @@ export default {
 .el-header {
   padding: 0;
 }
-.el-aside{
+.el-aside {
   width: 200px;
 }
 .header {

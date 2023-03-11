@@ -3,8 +3,8 @@
     <div>
       <div class="card-div">
         <div class="card-div2">
-          <div v-for="i in guideData" :key="i.name" class="card-div3">
-            <el-button text @click="goto(i)">{{ i.path }}</el-button>
+          <div v-for="i in guideData" :key="i.data" class="card-div3">
+            <el-button text @click="goto(i)">{{ i.data }}</el-button>
             <el-icon><ArrowRight /></el-icon>
           </div>
         </div>
@@ -17,8 +17,12 @@
             </el-button>
             <template #dropdown>
               <el-dropdown-menu>
-                <el-dropdown-item @click="upload()">上传文件</el-dropdown-item>
-                <el-dropdown-item @click="mkdir()">新建文件夹</el-dropdown-item>
+                <el-upload action="/upload" :on-success="ls"
+                  ><el-dropdown-item>上传文件</el-dropdown-item>
+                </el-upload>
+                <el-dropdown-item @click="showDialog('mkdir')"
+                  >新建文件夹</el-dropdown-item
+                >
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -37,7 +41,7 @@
               :body-style="{ padding: '0px' }"
               class="folder"
               shadow="hover"
-              @click="checkFolder()"
+              @click="checkFolder(i.id)"
             >
               <div class="folder-div">
                 <el-icon size="20"><Folder /></el-icon>
@@ -57,7 +61,7 @@
               :body-style="{ padding: '0px' }"
               class="file"
               shadow="hover"
-              @click="checkItem()"
+              @click="checkItem(i.id)"
             >
               <div class="describe"></div>
               <el-divider />
@@ -70,12 +74,12 @@
         </div>
 
         <div class="flex" v-show="this.$route.params.filter === undefined">
-          <div v-for="i in dataFilter" :key="i.name">
+          <div v-for="i in isFileInAll" :key="i.name">
             <el-card
               :body-style="{ padding: '0px' }"
               class="file"
               shadow="hover"
-              @click="checkItem()"
+              @click="checkItem(i.id)"
             >
               <div class="describe"></div>
               <el-divider />
@@ -89,25 +93,59 @@
       </div>
     </el-scrollbar>
   </div>
+  <dailog ref="dailog" />
+  <!-- {{ dataFilter }} -->
 </template>
 
 <script>
+import dailog from "./diaLog.vue";
 import axios from "axios";
 export default {
   name: "HomeView",
+    components: {
+    dailog,
+  },
   methods: {
-    goto() {},
-    upload() {
-      alert("aa");
+    goto() {
+      axios
+        .get("/file/0")
+        .then((response) => (this.dataFilter = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
+      axios
+        .get("/guide")
+        .then((response) => (this.guideData = response.data.data))
+        .catch(function (error) {
+          alert(error);
+        });
     },
-    mkdir() {
-      alert("aa");
+    mkdir(name) {
+      let data = { dirName: name };
+      axios
+        .post("/file", data)
+        .then()
+        .catch(function (error) {
+          alert(error);
+        });
+      location.reload();
     },
-    checkItem() {
-      alert("aa");
+    checkItem(id) {
+      alert(id);
     },
-    checkFolder() {
-      alert("aa");
+    checkFolder(id) {
+      axios
+        .get("/file/" + id)
+        .then((response) => (this.dataFilter = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
+      axios
+        .get("/guide")
+        .then((response) => (this.guideData = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
     },
     judge() {
       if (
@@ -118,6 +156,17 @@ export default {
       } else {
         return true;
       }
+    },
+    ls() {
+      axios
+        .get("/file")
+        .then((response) => (this.dataFilter = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
+    },
+    showDialog(i) {
+      this.$refs.dailog.callDailog(i);
     },
   },
   data() {
@@ -130,24 +179,27 @@ export default {
     isFile() {
       return this.dataFilter
         .filter((item) => item.type === "file")
-        .filter((item) => item.style === this.$route.params.filter);
+        .filter((item) => item.fileStyle === this.$route.params.filter);
     },
     isFolder() {
       return this.dataFilter.filter((item) => item.type === "folder");
     },
+    isFileInAll() {
+      return this.dataFilter.filter((item) => item.type === "file");
+    },
   },
   mounted() {
     axios
-      .get("http://127.0.0.1:8080/guidedata.json")
-      .then((response) => (this.guideData = response.data))
+      .get("/guide")
+      .then((response) => (this.guideData = response.data.data))
       .catch(function (error) {
-        alert(error);
+        console(error);
       });
     axios
-      .get("http://127.0.0.1:8080/fileinfo.json")
-      .then((response) => (this.dataFilter = response.data))
+      .get("/file")
+      .then((response) => (this.dataFilter = response.data.data))
       .catch(function (error) {
-        alert(error);
+        console(error);
       });
   },
 };

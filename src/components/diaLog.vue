@@ -8,9 +8,9 @@
   >
     <span class="dialog-footer">
       <el-from :model="newName">
-        <el-input placeholder="请输入新名称" v-model="newName.name"></el-input>
+        <el-input :placeholder="placeholder" v-model="newName.name"></el-input>
         <el-button @click="handleClose">取 消</el-button>
-        <el-button type="primary" @click="chName()">确 定</el-button>
+        <el-button type="primary" @click="handleFun">确 定</el-button>
       </el-from>
     </span>
   </el-dialog>
@@ -38,6 +38,8 @@ export default {
     return {
       title: "修改昵称",
       title2: "修改密码",
+      placeholder:"",
+      event:"",
       dialogVisible: false,
       dialogVisible2: false,
       newName: {
@@ -51,15 +53,27 @@ export default {
   },
   methods: {
     callDailog(i) {
+      this.event=i;
       if (i === "name") {
         this.dialogVisible = true;
       } else if (i === "pass") {
         this.dialogVisible2 = true;
+      } else if (i==="mkdir") {
+        this.dialogVisible =true;
+        this.title="创建文件夹";
+        this.placeholder="请输入文件夹名称";
+        this.fun="mkdir"
       }
     },
     handleClose() {
       this.dialogVisible = false;
       this.dialogVisible2 = false;
+    },
+    handleFun(){
+      if(this.event==="mkdir"){
+        this.mkdir();
+      }
+      this.dialogVisible = false;
     },
     chName() {
       alert(this.newName.name);
@@ -70,6 +84,9 @@ export default {
       alert("pass");
       this.dialogVisible2 = false;
     },
+    mkdir(){
+      this.$parent.mkdir(this.newName.name);
+    }
   },
 };
 </script>

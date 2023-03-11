@@ -1,18 +1,15 @@
-[
-  {
-    "name": "path1",
-    "path": "/"
-  },
-  {
-    "name": "path2",
-    "path": "home"
-  },
-  {
-    "name": "path3",
-    "path": "data"
-  },
-  {
-    "name": "path4",
-    "path": "data2"
-  }
-]
+{
+  "code": 200,
+  "msg": "success",
+  "data": [
+    {
+      "data": "root"
+    },
+    {
+      "data": "testDir"
+    },
+    {
+      "data": "testDir3"
+    }
+  ]
+}

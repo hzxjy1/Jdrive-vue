@@ -1,9 +1,32 @@
 <template>
   <el-card :body-style="{ padding: '0px' }" class="guide">
-    <div class="card-div">
-      <div v-for="i in guideData" :key="i.name" class="card-div2">
-        <el-button text @click="goto(i)">{{ i.path }}</el-button>
-        <el-icon><ArrowRight /></el-icon>
+    <div>
+      <div class="card-div">
+        <div class="card-div2">
+          <div v-for="i in guideData" :key="i.data" class="card-div3">
+            <el-button text @click="goto(i)">{{ i.data }}</el-button>
+            <el-icon><ArrowRight /></el-icon>
+          </div>
+        </div>
+        <div class="upload">
+          <el-dropdown>
+            <el-button type="primary">
+              <el-icon
+                ><el-icon><Plus /></el-icon
+              ></el-icon>
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-upload action="/upload" :on-success="ls"
+                  ><el-dropdown-item>上传文件</el-dropdown-item>
+                </el-upload>
+                <el-dropdown-item @click="showDialog('mkdir')"
+                  >新建文件夹</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </div>
   </el-card>
@@ -11,12 +34,14 @@
     <el-scrollbar always="true">
       <div class="back">
         <div style="margin: 10px"><span>文件夹</span></div>
+        <span v-show="isFolder.length === 0">aaa</span>
         <div class="flex">
           <div v-for="i in isFolder" :key="i.name">
             <el-card
               :body-style="{ padding: '0px' }"
               class="folder"
-              shadow="never"
+              shadow="hover"
+              @click="checkFolder(i.id)"
             >
               <div class="folder-div">
                 <el-icon size="20"><Folder /></el-icon>
@@ -29,12 +54,32 @@
       <el-divider />
       <div class="back">
         <div style="margin: 10px"><span>文件</span></div>
+        <span v-show="judge()">aaa</span>
         <div class="flex">
           <div v-for="i in isFile" :key="i.name">
             <el-card
               :body-style="{ padding: '0px' }"
               class="file"
-              shadow="never"
+              shadow="hover"
+              @click="checkItem(i.id)"
+            >
+              <div class="describe"></div>
+              <el-divider />
+              <div class="file-name">
+                <el-icon size="20"><Picture /></el-icon>
+                <span>{{ i.name }}</span>
+              </div>
+            </el-card>
+          </div>
+        </div>
+
+        <div class="flex" v-show="this.$route.params.filter === undefined">
+          <div v-for="i in isFileInAll" :key="i.name">
+            <el-card
+              :body-style="{ padding: '0px' }"
+              class="file"
+              shadow="hover"
+              @click="checkItem(i.id)"
             >
               <div class="describe"></div>
               <el-divider />
@@ -48,200 +93,119 @@
       </div>
     </el-scrollbar>
   </div>
+  <dailog ref="dailog" />
+  <!-- {{ dataFilter }} -->
 </template>
 
 <script>
+import dailog from "./diaLog.vue";
+import axios from "axios";
 export default {
   name: "HomeView",
+    components: {
+    dailog,
+  },
   methods: {
     goto() {
-      // alert("aa");
-      // alert(JSON.stringify(this.fileInfo));
+      axios
+        .get("/file/0")
+        .then((response) => (this.dataFilter = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
+      axios
+        .get("/guide")
+        .then((response) => (this.guideData = response.data.data))
+        .catch(function (error) {
+          alert(error);
+        });
+    },
+    mkdir(name) {
+      let data = { dirName: name };
+      axios
+        .post("/file", data)
+        .then()
+        .catch(function (error) {
+          alert(error);
+        });
+      location.reload();
+    },
+    checkItem(id) {
+      alert(id);
+    },
+    checkFolder(id) {
+      axios
+        .get("/file/" + id)
+        .then((response) => (this.dataFilter = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
+      axios
+        .get("/guide")
+        .then((response) => (this.guideData = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
+    },
+    judge() {
+      if (
+        (this.isFile.length === 0) ===
+        (this.$route.params.filter === undefined)
+      ) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    ls() {
+      axios
+        .get("/file")
+        .then((response) => (this.dataFilter = response.data.data))
+        .catch(function (error) {
+          console(error);
+        });
+    },
+    showDialog(i) {
+      this.$refs.dailog.callDailog(i);
     },
   },
   data() {
     return {
-      guideData: [
-        {
-          name: "path1",
-          path: "/",
-        },
-        {
-          name: "path2",
-          path: "home",
-        },
-        {
-          name: "path3",
-          path: "data",
-        },
-      ],
-      fileInfo: [
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "folder",
-          name: "folder",
-          path: "/folder",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-        {
-          type: "file",
-          style: "picture",
-          name: "file",
-          path: "/file",
-        },
-      ],
+      guideData: [],
+      dataFilter: [],
     };
   },
   computed: {
     isFile() {
-      return this.fileInfo.filter((item) => item.type === "file");
+      return this.dataFilter
+        .filter((item) => item.type === "file")
+        .filter((item) => item.fileStyle === this.$route.params.filter);
     },
     isFolder() {
-      return this.fileInfo.filter((item) => item.type === "folder");
+      return this.dataFilter.filter((item) => item.type === "folder");
     },
+    isFileInAll() {
+      return this.dataFilter.filter((item) => item.type === "file");
+    },
+  },
+  mounted() {
+    axios
+      .get("/guide")
+      .then((response) => (this.guideData = response.data.data))
+      .catch(function (error) {
+        console(error);
+      });
+    axios
+      .get("/file")
+      .then((response) => (this.dataFilter = response.data.data))
+      .catch(function (error) {
+        console(error);
+      });
   },
 };
 </script>
 <style lang="less" scoped>
 .scrollbar {
-  // background-color:gray;
   height: 85vh;
 }
 .el-divider {
@@ -251,12 +215,19 @@ export default {
   .card-div {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 40px;
     padding-left: 10px;
-  }
-  .card-div2 {
-    display: flex;
-    align-items: center;
+    .card-div2 {
+      display: flex;
+      .card-div3 {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .upload {
+      margin: 20px;
+    }
   }
 }
 .folder {
@@ -296,7 +267,6 @@ export default {
   .flex {
     display: flex;
     flex-wrap: wrap;
-    // background-color: gray;
   }
 }
 </style>

@@ -1,0 +1,64 @@
+{
+    "code": 200,
+    "msg": "success",
+    "data": [
+        {
+            "id": 2,
+            "name": "data1",
+            "parentId": 1,
+            "ownerId": 1,
+            "createAt": null,
+            "updateAt": null,
+            "type": "folder"
+        },
+        {
+            "id": 3,
+            "name": "data2",
+            "parentId": 1,
+            "ownerId": 1,
+            "createAt": null,
+            "updateAt": null,
+            "type": "folder"
+        },
+        {
+            "id": 5,
+            "name": "aaa",
+            "parentId": 1,
+            "ownerId": 1,
+            "createAt": null,
+            "updateAt": null,
+            "type": "folder"
+        },
+        {
+            "id": 7,
+            "name": "dir1",
+            "parentId": 1,
+            "ownerId": 233,
+            "createAt": null,
+            "updateAt": null,
+            "type": "folder"
+        },
+        {
+            "id": 1,
+            "name": "alice.jpg",
+            "sourceName": "/Jdrive/data",
+            "fileStyle": "picture",
+            "fileSize": null,
+            "folderId": 1,
+            "createAt": null,
+            "updateAt": null,
+            "type": "file"
+        },
+        {
+            "id": 2,
+            "name": "aaa",
+            "sourceName": "/folder",
+            "fileStyle": "picture",
+            "fileSize": null,
+            "folderId": 1,
+            "createAt": null,
+            "updateAt": null,
+            "type": "file"
+        }
+    ]
+}

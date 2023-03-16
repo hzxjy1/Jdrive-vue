@@ -3,6 +3,7 @@
     <el-card shadow="always" class="input">
       <el-form :model="form" class="from">
         <h2 style="text-align: center">{{ title }}</h2>
+        <el-alert :title="alertTitle" :type="alertType" show-icon v-show="alertShow" @close="alertClose"></el-alert>
         <el-form-item
           prop="name"
         >
@@ -59,12 +60,16 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       title: "注册Jdrive账号",
       buttonText: "注册",
       link: "返回登录",
+      alertTitle:"",
+      alertType:"",
+      alertShow:false,
       form: {
         name: "",
         passwd: "",
@@ -74,8 +79,36 @@ export default {
   },
   methods: {
     onSubmit() {
-      alert(this.form.name + this.form.passwd);
+      if(this.form.passwd!==this.form.repeat){
+        this.alertTitle="两次输入的密码不同";
+        this.alertType="error";
+        this.alertShow=true;
+        return;
+      }
+      let data = { "userName": this.form.name ,"passwd" :this.form.passwd };
+      axios
+        .post("/user/register", data)
+        .then((response) => (this.checkRegister(response.data)))
+        .catch(function (error) {
+          alert(error);
+        });
     },
+    checkRegister(data){
+        if(data.code===500){
+          this.alertTitle="用户名已被注册";
+          this.alertType="error";
+          this.alertShow=true;
+          return;
+        }else if(data.code===200){
+          this.alertTitle="注册成功";
+          this.alertType="success";
+          this.alertShow=true;
+          // setTimeout("this.$router.push('/login')",3000);
+        }
+    },
+   alertClose(){
+      this.alertShow=false;
+    }
   },
 };
 </script>

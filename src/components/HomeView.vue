@@ -94,7 +94,7 @@
     </el-scrollbar>
   </div>
   <dailog ref="dailog" />
-  <!-- {{ dataFilter }} -->
+  <!-- <span>{{ $store.state.userName }}</span> -->
 </template>
 
 <script>

@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import dailog from "./diaLog.vue";
 export default {
   name: "SettingView",
@@ -40,8 +41,19 @@ export default {
       this.$refs.dailog.callDailog(i);
     },
     exit() {
-      alert("aa");
+      axios
+        .get("/user/exit")
+        .then((response) => (this.checkExit(response.data)))
+        .catch(function (error) {
+          console(error);
+        });
     },
+    checkExit(data){
+        // alert(JSON.stringify(data))
+        if(data.code==200){
+          this.$router.push("/login");
+        }
+    }
   },
 };
 </script>

@@ -94,7 +94,7 @@
     </el-scrollbar>
   </div>
   <dailog ref="dailog" />
-  <!-- <span>{{ $store.state.userName }}</span> -->
+  <!-- <span>{{ isFile }}</span> -->
 </template>
 
 <script>

@@ -40,7 +40,6 @@
               :index="subItem.name"
               @click="clickMenu(subItem)"
             >
-              <!-- <el-icon><component :is="subItem.icon" /></el-icon> -->
               <el-menu-item :index="subItem.name">{{
                 subItem.label
               }}</el-menu-item>
@@ -65,78 +64,10 @@
 </template>
 
 <script>
+import axios from "axios";
+import userAside from "@/assets/aside/userAside.json";
+import adminAside from "@/assets/aside/adminAside.json"
 export default {
-  data() {
-    return {
-      title: "Jdrive",
-      search: "",
-      aside: false,
-      menuData: [
-        {
-          path: "/home",
-          name: "home",
-          label: "我的文件",
-          icon: "Plus",
-          children: [
-            {
-              path: "/home",
-              name: "all",
-              label: "全部",
-              icon: null,
-              filter: "all",
-            },
-            {
-              path: "/home/picture",
-              name: "picture",
-              label: "图片",
-              icon: "Picture",
-              filter: "picture",
-            },
-            {
-              path: "/home/video",
-              name: "video",
-              label: "视频",
-              icon: null,
-              filter: "video",
-            },
-            {
-              path: "/home/music",
-              name: "music",
-              label: "音乐",
-              icon: null,
-              filter: "music",
-            },
-            {
-              path: "/home/document",
-              name: "document",
-              label: "文档",
-              icon: null,
-              filter: "document",
-            },
-            {
-              path: "/home/other",
-              name: "other",
-              label: "其他",
-              icon: null,
-              filter: "other",
-            },
-          ],
-        },
-        {
-          path: "/profile",
-          name: "profile",
-          label: "个人主页",
-          icon: "User",
-        },
-        {
-          path: "/setting",
-          name: "setting",
-          label: "设置",
-          icon: "Setting",
-        },
-      ],
-    };
-  },
   components: {},
   methods: {
     hide() {
@@ -147,6 +78,14 @@ export default {
         this.$router.push(item.path);
       }
     },
+    getMenu(data) {
+      var asideJson=JSON.stringify(data.data);
+      if(asideJson==="1"){
+        this.menuData = adminAside;
+      }else{
+        this.menuData = userAside; 
+      }
+    },
   },
   computed: {
     hasChildren() {
@@ -155,6 +94,22 @@ export default {
     noChildren() {
       return this.menuData.filter((item) => !item.children);
     },
+  },
+  mounted() {
+    axios
+      .get("/user/aside")
+      .then((response) => this.getMenu(response))
+      .catch(function (error) {
+        console(error);
+      });
+  },
+  data() {
+    return {
+      title: "Jdrive",
+      search: "",
+      aside: false,
+      menuData:[],
+    };
   },
 };
 </script>

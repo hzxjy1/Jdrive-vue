@@ -6,33 +6,39 @@ import register from "@/views/account/RegisterPage.vue"
 import HomeView from "@/components/HomeView.vue"
 import ProfileView from "@/components/ProfileView.vue"
 import SettingView from "@/components/SettingView.vue"
+import UserManage from "@/views/UserManage.vue"
 
 const routes = [
   {
     path: "/",
     name: "HomePage",
     component: HomePage,
-    children:[
+    children: [
       {
-        path:"/home",
-        name:"home",
-        component:HomeView,
-        children:[{
-          path:":filter",
-          name:"params",
-          component:HomeView,
+        path: "/home",
+        name: "home",
+        component: HomeView,
+        children: [{
+          path: ":filter",
+          name: "params",
+          component: HomeView,
         }]
       },
       {
-        path:"/profile",
-        name:"profile",
-        component:ProfileView
+        path: "/profile",
+        name: "profile",
+        component: ProfileView
       },
       {
-        path:"/setting",
-        name:"setting",
-        component:SettingView
+        path: "/setting",
+        name: "setting",
+        component: SettingView
       },
+      {
+        path: "/user",
+        name: "user",
+        component: UserManage,
+      }
     ]
   },
   {

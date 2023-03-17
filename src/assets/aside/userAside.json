@@ -1,0 +1,64 @@
+[
+  {
+    "path": "/home",
+    "name": "home",
+    "label": "我的文件",
+    "icon": "Plus",
+    "children": [
+      {
+        "path": "/home",
+        "name": "all",
+        "label": "全部",
+        "icon": null,
+        "filter": "all"
+      },
+      {
+        "path": "/home/picture",
+        "name": "picture",
+        "label": "图片",
+        "icon": "Picture",
+        "filter": "picture"
+      },
+      {
+        "path": "/home/video",
+        "name": "video",
+        "label": "视频",
+        "icon": null,
+        "filter": "video"
+      },
+      {
+        "path": "/home/music",
+        "name": "music",
+        "label": "音乐",
+        "icon": null,
+        "filter": "music"
+      },
+      {
+        "path": "/home/document",
+        "name": "document",
+        "label": "文档",
+        "icon": null,
+        "filter": "document"
+      },
+      {
+        "path": "/home/other",
+        "name": "other",
+        "label": "其他",
+        "icon": null,
+        "filter": "other"
+      }
+    ]
+  },
+  {
+    "path": "/profile",
+    "name": "profile",
+    "label": "个人主页",
+    "icon": "User"
+  },
+  {
+    "path": "/setting",
+    "name": "setting",
+    "label": "设置",
+    "icon": "Setting"
+  }
+]

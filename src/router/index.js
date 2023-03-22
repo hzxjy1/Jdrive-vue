@@ -6,7 +6,9 @@ import register from "@/views/account/RegisterPage.vue"
 import HomeView from "@/components/HomeView.vue"
 import ProfileView from "@/components/ProfileView.vue"
 import SettingView from "@/components/SettingView.vue"
-import UserManage from "@/views/UserManage.vue"
+import UserManage from "@/views/admin/UserManage.vue"
+import GroupManage from "@/views/admin/GroupManage.vue"
+import SiteManage from "@/views/admin/SiteManage.vue"
 
 const routes = [
   {
@@ -38,6 +40,16 @@ const routes = [
         path: "/user",
         name: "user",
         component: UserManage,
+      },
+      {
+        path: "/group",
+        name: "group",
+        component: GroupManage,
+      },
+      {
+        path: "/site",
+        name: "site",
+        component: SiteManage,
       }
     ]
   },

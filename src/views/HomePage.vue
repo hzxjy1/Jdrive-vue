@@ -10,7 +10,7 @@
           <el-col :span="3"
             ><span class="font">{{ title }}</span></el-col
           >
-          <el-col :span="4"
+          <!-- <el-col :span="4"
             ><el-input
               type="text"
               v-model="search"
@@ -18,7 +18,7 @@
               clearable
               size="large"
             ></el-input
-          ></el-col>
+          ></el-col> -->
         </el-row>
       </div>
     </el-header>
@@ -66,7 +66,7 @@
 <script>
 import axios from "axios";
 import userAside from "@/assets/aside/userAside.json";
-import adminAside from "@/assets/aside/adminAside.json"
+import adminAside from "@/assets/aside/adminAside.json";
 export default {
   components: {},
   methods: {
@@ -79,11 +79,12 @@ export default {
       }
     },
     getMenu(data) {
-      var asideJson=JSON.stringify(data.data);
-      if(asideJson==="1"){
+      var asideJson = JSON.stringify(data.data);
+      // asideJson=0;
+      if (asideJson === "1") {
         this.menuData = adminAside;
-      }else{
-        this.menuData = userAside; 
+      } else {
+        this.menuData = userAside;
       }
     },
   },
@@ -108,7 +109,7 @@ export default {
       title: "Jdrive",
       search: "",
       aside: false,
-      menuData:[],
+      menuData: [],
     };
   },
 };

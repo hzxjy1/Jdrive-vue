@@ -3,9 +3,28 @@
     <div>
       <div class="card-div">
         <div class="card-div2">
-          <div v-for="i in guideData" :key="i.data" class="card-div3">
+          <div
+            v-for="i in guideData"
+            :key="i.data"
+            class="card-div3"
+            v-show="!detail.visible"
+          >
             <el-button text @click="goto(i)">{{ i.data }}</el-button>
             <el-icon><ArrowRight /></el-icon>
+          </div>
+          <div v-show="detail.visible">
+            <el-button
+              circle
+              @click="this.detail.visible = false"
+              ><el-icon><Back /></el-icon
+            ></el-button>
+            <span style="margin: 15px;">{{ detail.name }}</span>
+            <el-button circle
+              ><el-icon><Pointer /></el-icon
+            ></el-button>
+            <el-button type="danger" circle
+              ><el-icon><Delete /></el-icon
+            ></el-button>
           </div>
         </div>
         <div class="upload">
@@ -34,7 +53,7 @@
     <el-scrollbar always="true">
       <div class="back">
         <div style="margin: 10px"><span>文件夹</span></div>
-        <span v-show="isFolder.length === 0">aaa</span>
+        <span v-show="isFolder.length === 0">暂无文件夹</span>
         <div class="flex">
           <div v-for="i in isFolder" :key="i.name">
             <el-card
@@ -54,7 +73,7 @@
       <el-divider />
       <div class="back">
         <div style="margin: 10px"><span>文件</span></div>
-        <span v-show="judge()">aaa</span>
+        <span v-show="judge()">暂无文件</span>
         <div class="flex">
           <div v-for="i in isFile" :key="i.name">
             <el-card
@@ -79,7 +98,7 @@
               :body-style="{ padding: '0px' }"
               class="file"
               shadow="hover"
-              @click="checkItem(i.id)"
+              @click="checkItem(i)"
             >
               <div class="describe"></div>
               <el-divider />
@@ -102,7 +121,7 @@ import dailog from "./diaLog.vue";
 import axios from "axios";
 export default {
   name: "HomeView",
-    components: {
+  components: {
     dailog,
   },
   methods: {
@@ -130,10 +149,13 @@ export default {
         });
       location.reload();
     },
-    checkItem(id) {
-      alert(id);
+    checkItem(i) {
+      this.detail.id = i.id;
+      this.detail.name = i.name;
+      this.detail.visible = true;
     },
     checkFolder(id) {
+      this.detail.visible = false;
       axios
         .get("/file/" + id)
         .then((response) => (this.dataFilter = response.data.data))
@@ -173,6 +195,11 @@ export default {
     return {
       guideData: [],
       dataFilter: [],
+      detail: {
+        id: "",
+        name: "",
+        visible: false,
+      },
     };
   },
   computed: {

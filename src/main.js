@@ -6,11 +6,14 @@ import router from './router'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import axios from 'axios'
 import store from './store'
+import Menus from 'vue3-menus';
+
 
 const app = createApp(App)
 app.use(ElementPlus)
 app.use(router)
 app.use(store)
+app.use(Menus)
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
   }

@@ -66,10 +66,6 @@ export default {
   },
   methods: {
     onSubmit() {
-        //   this.alertTitle="两次输入的密码不同";
-        // this.alertType="error";
-        // this.alertShow=true;
-      // alert(this.form.name + this.form.passwd);
       let data = { "userName": this.form.name ,"passwd" :this.form.passwd };
       axios
         .post("/user/doLogin", data)
